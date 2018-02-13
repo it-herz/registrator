@@ -11,7 +11,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"fmt"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 )
