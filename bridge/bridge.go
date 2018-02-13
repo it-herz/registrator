@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"fmt"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 )
@@ -320,6 +321,10 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 				log.Println("unable to inspect network container:", networkContainerId[:12], err)
 			} else {
 				ipFromNetworkContainer = networkContainer.NetworkSettings.IPAddress
+				// Some debug - to remove
+				fmt.Printf("%+v\n",networkContainer.NetworkSettings) 
+				fmt.Printf("%+v\n",networkContainer) 
+				// debug end
 
 				if ipFromNetworkContainer != "" {
 					service.IP = networkContainer.NetworkSettings.IPAddress
