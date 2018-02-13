@@ -321,10 +321,6 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 				log.Println("unable to inspect network container:", networkContainerId[:12], err)
 			} else {
 				ipFromNetworkContainer = networkContainer.NetworkSettings.IPAddress
-				// Some debug - to remove
-				fmt.Printf("%+v\n",networkContainer.NetworkSettings) 
-				fmt.Printf("%+v\n",networkContainer) 
-				// debug end
 
 				if ipFromNetworkContainer != "" {
 					service.IP = networkContainer.NetworkSettings.IPAddress
@@ -336,19 +332,20 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 		}
 	}
 
-	fmt.Printf("%+v\n", b.config)
 	// Grab the container IP address from docker or kubernetes env
 	if b.config.UseIpFromEnv != "" && ipFromNetworkContainer == "" {
-		fmt.Printf("%+v\n", container.Config.Env)
+		found = false
 		for _, requiredEnv := range container.Config.Env {
 			if strings.Contains(requiredEnv, b.config.UseIpFromEnv) {
 				service.IP = requiredEnv[len(b.config.UseIpFromEnv)+1:]
 				log.Println(service.Name + ": using container IP '" + service.IP +
 					"' from env '" + b.config.UseIpFromEnv  + "'")
-			} else {
-				log.Println(service.Name + ": could not found env '" + b.config.UseIpFromEnv  +
+				found = true
+			} 
+		}
+		if found == false {
+			log.Println(service.Name + ": could not found env '" + b.config.UseIpFromEnv  +
 					"' from docker env")
-			}
 		}
 	}
 
