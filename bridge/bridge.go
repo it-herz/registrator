@@ -334,7 +334,7 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 
 	// Grab the container IP address from docker or kubernetes env
 	if b.config.UseIpFromEnv != "" && ipFromNetworkContainer == "" {
-		found = false
+		found := false
 		for _, requiredEnv := range container.Config.Env {
 			if strings.Contains(requiredEnv, b.config.UseIpFromEnv) {
 				service.IP = requiredEnv[len(b.config.UseIpFromEnv)+1:]
