@@ -101,6 +101,7 @@ func main() {
 		HostIp:          *hostIp,
 		Internal:        *internal,
 		UseIpFromLabel:  *useIpFromLabel,
+		UseIpFromEnv:    *useIpFromEnv,
 		ForceTags:       *forceTags,
 		RefreshTtl:      *refreshTtl,
 		RefreshInterval: *refreshInterval,
