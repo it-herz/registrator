@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM consul
 
 COPY . /go/src/github.com/gliderlabs/registrator
 RUN apk --no-cache add -t build-deps build-base go git \
