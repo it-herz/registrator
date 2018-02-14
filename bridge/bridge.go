@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"fmt"
 
 	dockerapi "github.com/fsouza/go-dockerclient"
 )
@@ -375,9 +376,11 @@ func (b *Bridge) remove(containerId string, deregister bool) {
 	b.Lock()
 	defer b.Unlock()
 
+	fmt.Printf("Trying to deregister %s\n", containerId)
 	if deregister {
 		deregisterAll := func(services []*Service) {
 			for _, service := range services {
+				fmt.Printf("Service: %+v\n", service)
 				err := b.registry.Deregister(service)
 				if err != nil {
 					log.Println("deregister failed:", service.ID, err)
@@ -386,8 +389,10 @@ func (b *Bridge) remove(containerId string, deregister bool) {
 				log.Println("removed:", containerId[:12], service.ID)
 			}
 		}
+		fmt.Printf("Services: %+v\n", b.services[containerId])
 		deregisterAll(b.services[containerId])
 		if d := b.deadContainers[containerId]; d != nil {
+			fmt.Printf("Dead: %+v\n", d.Services)
 			deregisterAll(d.Services)
 			delete(b.deadContainers, containerId)
 		}
