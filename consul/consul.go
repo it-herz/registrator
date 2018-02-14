@@ -83,6 +83,7 @@ func (r *ConsulAdapter) Register(service *bridge.Service) error {
 	registration.Tags = service.Tags
 	registration.Address = service.IP
 	registration.Check = r.buildCheck(service)
+	fmt.Printf("Consul reg: %+v\n", registration)
 	return r.client.Agent().ServiceRegister(registration)
 }
 
