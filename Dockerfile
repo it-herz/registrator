@@ -11,5 +11,6 @@ RUN apk --no-cache add -t build-deps build-base go git \
 	&& rm -rf /go \
 	&& apk del --purge build-deps
 	
-ADD *.sh /
-ENTRYPOINT /bin/sh
+ADD run-agent.sh /usr/local/bin/
+ENTRYPOINT run-agent.sh
+
